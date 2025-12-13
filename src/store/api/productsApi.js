@@ -6,19 +6,24 @@ export const productsApi = createApi({
         baseUrl: 'https://dummyjson.com',
     }),
     endpoints: (build) => ({
-        getAllProducts: build.query({
+        getProducts: build.query({
             query: () => '/products',
         }),
-
+        getProductsByCategory: build.query({
+            query: (categoryName) => `products/category/${categoryName}`,
+        }),
         getProductById: build.query({
             query: (id) => `/products/${id}`,
         }),
-
-        getProductByCategory: build.query({
-            query: (category) => `/products/category/${category}`,
+        getCategories: build.query({
+            query: () => '/products/categories',
         }),
     }),
 });
 
-export const { useGetAllProductsQuery, useGetProductByIdQuery, useGetProductByCategoryQuery } =
-    productsApi;
+export const {
+    useGetProductsQuery,
+    useGetProductsByCategoryQuery,
+    useGetProductByIdQuery,
+    useGetCategoriesQuery,
+} = productsApi;
