@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import Product from './Product';
+import { Link } from 'react-router';
 
 const ProductsList = ({ products }) => {
     const [productQuantities, setProductQuantities] = useState({});
+
     const handleProdCartIncrement = (id) => {
         setProductQuantities((prev) => ({
             ...prev,
@@ -19,28 +22,16 @@ const ProductsList = ({ products }) => {
     return (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
             {products.map(({ id, title, price }) => (
-                <div
-                    key={id}
-                    style={{ border: '1px solid #ccc', padding: '10px', borderRadius: '5px' }}
-                >
-                    <h3>{title}</h3>
-                    <h4>${price}</h4>
-
-                    <button>View</button>
-                    <button>Add to cart</button>
-
-                    <div className="">
-                        <button onClick={() => handleProdCartDecrement(id)}>{'<-'}</button>
-                        <input
-                            readOnly
-                            type="text"
-                            name=""
-                            id=""
-                            value={productQuantities[id] || 0}
-                        />
-                        <button onClick={() => handleProdCartIncrement(id)}>{'->'}</button>
-                    </div>
-                </div>
+                <Link to={`/products/${id}`}>
+                    <Product
+                        productQuantities={productQuantities}
+                        id={id}
+                        title={title}
+                        price={price}
+                        onClickIncrement={handleProdCartIncrement}
+                        onClickDecrement={handleProdCartDecrement}
+                    />
+                </Link>
             ))}
         </div>
     );
