@@ -1,7 +1,9 @@
-import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
+    const state = useSelector((state) => state.cart);
+
     return (
         <header>
             <div className="container">
@@ -23,6 +25,18 @@ const Header = () => {
                             </li>
                         </ul>
                     </nav>
+                </div>
+
+                <div className="" style={{ display: 'flex', gap: '10px' }}>
+                    <div
+                        className="
+                    "
+                    >
+                        <Link to="/cart">Cart</Link>
+                        <span>{state?.totalQuantity || 0}</span>
+                    </div>
+                    <Link to="/login">Login</Link>
+                    <Link to="/register">Register</Link>
                 </div>
             </div>
         </header>

@@ -6,6 +6,7 @@ import About from './pages/About.jsx';
 import NotFound from './pages/NotFound.jsx';
 import ProductPage from './pages/ProductPage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
+import CartPage from './pages/CartPage.jsx';
 
 const App = () => {
     return (
@@ -18,6 +19,7 @@ const App = () => {
                 <Route path="/products" element={<ProductsPage />} />
                 <Route path="/products/:id" element={<ProductPage />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/cart" element={<CartPage />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </>
