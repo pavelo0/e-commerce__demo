@@ -30,6 +30,9 @@ export default {
     resolve: {
         extensions: ['.jsx', '.js', '.json'],
         enforceExtension: false,
+        alias: {
+            '@': path.resolve('./src'),
+        },
     },
     plugins: [
         new HtmlWebpackPlugin({
