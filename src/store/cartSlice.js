@@ -24,5 +24,21 @@ export const cartSlice = createSlice({
                 state.totalQuantity += quantity;
             }
         },
+        clearCart: (state) => {
+            state.items = [];
+            state.totalPrice = 0;
+            state.totalQuantity = 0;
+        },
+        loadCart: (state, { payload }) => {
+            state.items = payload || [];
+
+            state.totalPrice = state.items.reduce((total, item) => {
+                return total + item.price * item.quantity;
+            }, 0);
+
+            state.totalQuantity = state.items.reduce((total, item) => {
+                return total + item.quantity;
+            }, 0);
+        },
     },
 });

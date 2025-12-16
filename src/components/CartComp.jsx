@@ -1,17 +1,25 @@
-import { useSelector } from 'react-redux';
-import {
-    Box,
-    Typography,
-    Card,
-    CardContent,
-    CardMedia,
-    Stack,
-    Divider,
-    Chip,
-} from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { Box, Typography, Card, CardContent, CardMedia, Stack, Divider, Chip, Button } from '@mui/material';
+import { cartSlice } from '@/store/cartSlice';
+import { authSlice } from '@/store/authSlice';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
 const CartComp = () => {
     const state = useSelector((state) => state.cart);
+    const auth = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+
+    // Синхронизируем корзину с пользователем при изменении
+    useEffect(() => {
+        if (auth.isAuthenticated && auth.currentUser) {
+            dispatch(authSlice.actions.updateUserCart(state.items));
+        }
+    }, [state.items, auth.isAuthenticated, auth.currentUser, dispatch]);
+
+    const handleOrder = () => {
+        dispatch(cartSlice.actions.clearCart());
+    };
 
     if (state.items.length === 0) {
         return (
@@ -48,7 +56,14 @@ const CartComp = () => {
 
             <Stack spacing={2}>
                 {state.items.map((item) => (
-                    <Card key={item.id} sx={{ display: 'flex', boxShadow: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
+                    <Card
+                        key={item.id}
+                        sx={{
+                            display: 'flex',
+                            boxShadow: 2,
+                            flexDirection: { xs: 'column', sm: 'row' },
+                        }}
+                    >
                         <CardMedia
                             component="img"
                             image={item.image}
@@ -99,6 +114,22 @@ const CartComp = () => {
                     </Card>
                 ))}
             </Stack>
+
+            <Button
+                variant="contained"
+                size="large"
+                fullWidth
+                onClick={handleOrder}
+                startIcon={<ShoppingCartCheckoutIcon />}
+                sx={{
+                    py: 2,
+                    mt: 2,
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                }}
+            >
+                Create Order
+            </Button>
         </Box>
     );
 };

@@ -8,13 +8,24 @@ import {
     Button,
     IconButton,
     Badge,
+    Avatar,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { authSlice } from '@/store/authSlice';
+import { Link, useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const Header = () => {
+    const dispatch = useDispatch();
     const state = useSelector((state) => state.cart);
+    const auth = useSelector((state) => state.auth);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(authSlice.actions.logout());
+        navigate('/');
+    };
 
     return (
         <AppBar position="static" elevation={2}>
@@ -74,39 +85,89 @@ const Header = () => {
                     </Stack>
 
                     <Stack direction="row" spacing={{ xs: 0.5, sm: 1, md: 2 }} alignItems="center">
-                        <IconButton component={Link} to="/cart" sx={{ color: 'white' }}>
-                            <Badge badgeContent={state?.totalQuantity || 0} color="secondary">
-                                <ShoppingCartIcon />
-                            </Badge>
-                        </IconButton>
-                        <Button
-                            component={Link}
-                            to="/login"
-                            sx={{
-                                color: 'white',
-                                fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                                display: { xs: 'none', sm: 'inline-flex' },
-                            }}
-                        >
-                            Login
-                        </Button>
-                        <Button
-                            component={Link}
-                            to="/register"
-                            variant="outlined"
-                            sx={{
-                                color: 'white',
-                                borderColor: 'white',
-                                fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                                '&:hover': {
-                                    borderColor: 'white',
-                                    bgcolor: 'rgba(255, 255, 255, 0.1)',
-                                },
-                                display: { xs: 'none', sm: 'inline-flex' },
-                            }}
-                        >
-                            Register
-                        </Button>
+                        {auth.isAuthenticated && (
+                            <>
+                                <IconButton component={Link} to="/cart" sx={{ color: 'white' }}>
+                                    <Badge
+                                        badgeContent={state?.totalQuantity || 0}
+                                        color="secondary"
+                                    >
+                                        <ShoppingCartIcon />
+                                    </Badge>
+                                </IconButton>
+
+                                <Stack direction="row" spacing={1} alignItems="center">
+                                    <Avatar
+                                        sx={{
+                                            bgcolor: 'rgba(255, 255, 255, 0.2)',
+                                            width: 32,
+                                            height: 32,
+                                            fontSize: '0.875rem',
+                                        }}
+                                    >
+                                        {auth.currentUser?.username?.charAt(0).toUpperCase()}
+                                    </Avatar>
+                                    <Typography
+                                        sx={{
+                                            color: 'white',
+                                            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                                            display: { xs: 'none', sm: 'block' },
+                                        }}
+                                    >
+                                        {auth.currentUser?.username}
+                                    </Typography>
+                                </Stack>
+
+                                <Button
+                                    onClick={handleLogout}
+                                    variant="outlined"
+                                    startIcon={<LogoutIcon />}
+                                    sx={{
+                                        color: 'white',
+                                        borderColor: 'white',
+                                        fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                                        '&:hover': {
+                                            borderColor: 'white',
+                                            bgcolor: 'rgba(255, 255, 255, 0.1)',
+                                        },
+                                    }}
+                                >
+                                    Logout
+                                </Button>
+                            </>
+                        )}
+                        {!auth.isAuthenticated && (
+                            <>
+                                <Button
+                                    component={Link}
+                                    to="/login"
+                                    sx={{
+                                        color: 'white',
+                                        fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                                        display: { xs: 'none', sm: 'inline-flex' },
+                                    }}
+                                >
+                                    Login
+                                </Button>
+                                <Button
+                                    component={Link}
+                                    to="/register"
+                                    variant="outlined"
+                                    sx={{
+                                        color: 'white',
+                                        borderColor: 'white',
+                                        fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                                        '&:hover': {
+                                            borderColor: 'white',
+                                            bgcolor: 'rgba(255, 255, 255, 0.1)',
+                                        },
+                                        display: { xs: 'none', sm: 'inline-flex' },
+                                    }}
+                                >
+                                    Register
+                                </Button>
+                            </>
+                        )}
                     </Stack>
                 </Toolbar>
             </Container>

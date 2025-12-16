@@ -2,7 +2,7 @@ import { Container, Box, Typography, Paper, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
-const NotFound = () => {
+const NotFoundPage = () => {
     return (
         <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 3, md: 4 } }}>
             <Box
@@ -61,4 +61,4 @@ const NotFound = () => {
     );
 };
 
-export default NotFound;
+export default NotFoundPage;
