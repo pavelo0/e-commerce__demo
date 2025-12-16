@@ -1,15 +1,22 @@
 import Product from './Product';
-import { Link } from 'react-router';
+import { Box } from '@mui/material';
 
 const ProductsList = ({ products }) => {
     return (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+        <Box
+            sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                gap: { xs: 2, sm: 3 },
+                alignItems: 'stretch',
+            }}
+        >
             {products.map(({ id, title, price, thumbnail }) => (
-                <Link key={id} to={`/products/${id}`}>
+                <Box key={id} sx={{ height: '100%' }}>
                     <Product id={id} title={title} price={price} thumbnail={thumbnail} />
-                </Link>
+                </Box>
             ))}
-        </div>
+        </Box>
     );
 };
 
