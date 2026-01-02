@@ -1,8 +1,9 @@
 import { useGetProductByIdQuery } from '@/store/api/productsApi';
-import { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link, useParams } from 'react-router';
+import { useState, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams, useNavigate } from 'react-router';
 import { cartSlice } from '@/store/cartSlice';
+import { authSlice } from '@/store/authSlice';
 import {
     Container,
     Box,
@@ -24,12 +25,22 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ProductPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const auth = useSelector((state) => state.auth);
+    const cart = useSelector((state) => state.cart);
 
     const [errorQuantity, setErrorQuantity] = useState(null);
     const [productQuantities, setProductQuantities] = useState({});
     const { id } = useParams();
 
     const { data, isLoading, error } = useGetProductByIdQuery(id);
+
+    // Синхронизируем корзину с пользователем при изменении
+    useEffect(() => {
+        if (auth.isAuthenticated && auth.currentUser) {
+            dispatch(authSlice.actions.updateUserCart(cart.items));
+        }
+    }, [cart.items, auth.isAuthenticated, auth.currentUser, dispatch]);
 
     const handleProdCartIncrement = useCallback(() => {
         setProductQuantities((prev) => ({
@@ -46,6 +57,11 @@ const ProductPage = () => {
     }, [id]);
 
     const handleAddToCart = useCallback(() => {
+        if (!auth.isAuthenticated) {
+            navigate('/login');
+            return;
+        }
+
         if (productQuantities[id] <= 0) {
             setErrorQuantity('Quantity must be greater than 0');
             return;
@@ -61,7 +77,7 @@ const ProductPage = () => {
             })
         );
         setErrorQuantity(null);
-    }, [dispatch, id, data, productQuantities]);
+    }, [dispatch, id, data, productQuantities, auth.isAuthenticated, navigate]);
 
     if (isLoading) {
         return (
@@ -109,34 +125,24 @@ const ProductPage = () => {
 
                 <Grid container spacing={4}>
                     <Grid item xs={12} md={6}>
-                        <Box
+                        <Card
                             sx={{
-                                display: 'flex',
-                                gap: { xs: 1, sm: 2 },
-                                flexWrap: 'wrap',
-                                justifyContent: 'center',
+                                width: '100%',
+                                maxWidth: { xs: '100%', sm: 500 },
+                                mx: 'auto',
                             }}
                         >
-                            {data.images.map((image) => (
-                                <Card
-                                    key={image}
-                                    sx={{
-                                        maxWidth: { xs: '100%', sm: 300 },
-                                        width: { xs: '100%', sm: 'auto' },
-                                    }}
-                                >
-                                    <CardMedia
-                                        component="img"
-                                        image={image}
-                                        alt={data.title}
-                                        sx={{
-                                            height: { xs: 250, sm: 300 },
-                                            objectFit: 'cover',
-                                        }}
-                                    />
-                                </Card>
-                            ))}
-                        </Box>
+                            <CardMedia
+                                component="img"
+                                image={data.images[0]}
+                                alt={data.title}
+                                sx={{
+                                    height: { xs: 300, sm: 400, md: 500 },
+                                    objectFit: 'contain',
+                                    bgcolor: 'background.paper',
+                                }}
+                            />
+                        </Card>
                     </Grid>
 
                     <Grid item xs={12} md={6}>

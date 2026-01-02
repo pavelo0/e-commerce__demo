@@ -1,7 +1,7 @@
 import { Container, Box, Typography, Paper, Stack } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 
-const About = () => {
+const AboutPage = () => {
     return (
         <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 3, md: 4 } }}>
             <Box
@@ -46,4 +46,4 @@ const About = () => {
     );
 };
 
-export default About;
+export default AboutPage;
