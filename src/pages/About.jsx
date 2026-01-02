@@ -36,7 +36,7 @@ const About = () => {
                             wordBreak: 'break-word',
                         }}
                     >
-                        This is a demo e-commerce application built with React, Material-UI, and Redux Toolkit.
+                        This is ShopHub - an e-commerce application built with React, Material-UI, and Redux Toolkit.
                         It showcases modern web development practices including state management, routing, and
                         responsive design.
                     </Typography>

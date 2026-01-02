@@ -36,7 +36,7 @@ const Header = () => {
                             fontSize: { xs: '1rem', sm: '1.25rem' },
                         }}
                     >
-                        E_Commerce Demo
+                        ShopHub
                     </Typography>
 
                     <Stack
@@ -55,21 +55,21 @@ const Header = () => {
                             to="/"
                             sx={{ color: 'white', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                         >
-                            Главная
+                            Home
                         </Button>
                         <Button
                             component={Link}
                             to="/products"
                             sx={{ color: 'white', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                         >
-                            Товары
+                            Products
                         </Button>
                         <Button
                             component={Link}
                             to="/about"
                             sx={{ color: 'white', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
                         >
-                            О нас
+                            About
                         </Button>
                     </Stack>
 

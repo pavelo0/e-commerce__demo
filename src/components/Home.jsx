@@ -36,7 +36,7 @@ const Home = () => {
                             fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' },
                         }}
                     >
-                        Welcome to E-Commerce Demo
+                        Welcome to ShopHub
                     </Typography>
                     <Typography
                         variant="h6"
